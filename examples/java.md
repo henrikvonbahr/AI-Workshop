@@ -3,30 +3,43 @@
 ## Good
 
 ```java
-log.info("Document import completed documentId={} outcome={}", document.id(), "accepted");
-```
-
-Stable event with safe structured context.
-
-```java
-catch (UnsupportedFormatException exception) {
-    log.warn("Document import rejected: unsupported format");
-    throw exception;
+public void handleError(final ServiceBusErrorContext context) {
+  log.error("Service Bus error in entity '{}' (source: {}): {}",
+      context.getEntityPath(),
+      context.getErrorSource(),
+      context.getException().getMessage(),
+      context.getException());
 }
 ```
+Correct formatted log with context.
 
-Handled outcome without document contents or submitted filename.
+```java
+log.error("Unexpected exception", e.getMessage());
+```
+Does not reveal stack trace.
+
+```java
+log.info("User created")
+````
+Correct log level, is info.
 
 ## Counterexamples
 
 ```java
-log.info("Import request: " + request);
+public void handleError(final ServiceBusErrorContext context) {
+  final String errorMessage = "Service Bus error in entity '%s': %s%n" +
+      context.getEntityPath() + context.getException().getMessage();
+  log.error(errorMessage);
+}
 ```
-
-Object conversion may expose the complete payload.
+Incorrect formatting, should have used .format().
 
 ```java
-log.error("Import failed token={} because {}", request.token(), exception.getMessage(), exception);
+log.error("Unexpected exception", e);
 ```
+Reveals stacktrace.
 
-Leaks authentication material and repeats exception text.
+```java
+log.error("User created")
+```
+Wrong log level, is info but not error.

@@ -1,56 +1,3 @@
-# Baseline result
-
-Implement the following task in java.
-
-
-Return a compact but understandable implementation. Include small supporting types needed to understand the control flow. After the code, list at most three assumptions.
-
-
-Implement a compact service or endpoint in a language of your choice that:
-
-
-
-- accepts order ID, card data and amount;
-
-- calls a payment provider;
-
-- logs accepted and rejected outcomes;
-
-- handles provider timeout and unexpected failure;
-
-- returns a compact result.
-
-
-
-Include enough surrounding types or pseudocode to understand logged values and exception boundaries.
-
-
-
-
-
-
-
-just now
-
-
-
-
-
-
-
-## Copilot said: ```java import java.time.Duration; import java.util.Objects; import java.util.UUID; import java.util.concurrent.TimeoutException; public final class PaymentService { private static final System.Logger LOG =…
-
-Thought for 26s
-
-
-
-Java
-
-
-
-
-
-
 ```java
 import java.time.Duration;
 import java.util.Objects;
@@ -130,21 +77,4 @@ public final class PaymentService {
         return result;
     }
 }
-
 ```
-
-
-
-
-
-
-
-**Assumptions**
-
-
-
-- Card data is a token obtained through secure card collection; amounts are USD cents.
-
-- The provider adapter enforces the timeout and honors order-based idempotency; one payment amount is permitted per order.
-
-- `UNKNOWN` requires reconciliation with the provider, not treatment as a decline or a retry with a new idempotency key.
